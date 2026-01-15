@@ -81,3 +81,91 @@ fm.clear("data.txt"); // The file still exists but is now empty.
 * **Indices:** All line numbers are 0-based (the first line is index `0`).
 * **Exceptions:** Most methods include internal `try-catch` blocks to handle `IOExceptions`.
 * **Dependencies:** Requires Java 8 or higher (uses `java.nio.file.Files`).
+
+# SunayFiler
+
+`SunayFiler` is a lightweight data writer and interpreter built on top of `FileManager`. It is specifically designed for game development, allowing you to save and load typed variables (Integer, Boolean, String) using a simple, human-readable `.txt` format.
+
+---
+
+## 🚀 Key Features
+
+* **Type Preservation:** Automatically handles prefixes (`~i~`, `~b~`, `~s~`) so data returns as the correct object type.
+* **Key-Value Logic:** Interact with your text files like a Database or HashMap.
+* **Smart Updates:** The `update()` method automatically decides whether to overwrite an existing key or append a new one.
+* **Custom Format:** Uses a configurable split indicator (`$`) for clean data separation.
+
+---
+
+## 📋 Data Format Standard
+Data is stored in the following format:
+`[TypePrefix] [Key] $ [Value]`
+
+**Example File Content:**
+```text
+~i~ player_score $ 500
+~b~ is_game_over $ false
+~s~ player_name $ Jackson
+```
+
+---
+
+## 📖 API Reference
+
+### Adding & Updating Data
+| Method | Description |
+| :--- | :--- |
+| `add(filename, key, value)` | Appends a new key-value pair to the file. Supports `String`, `int`, and `boolean`. |
+| `update(filename, key, value)` | **Recommended.** Checks if a key exists. If found, it updates that line; otherwise, it appends a new one. |
+
+### Retrieval & Parsing
+| Method | Description |
+| :--- | :--- |
+| `get(filename, key)` | Searches the file for the key and returns the value as an `Object`. |
+| `getIndexByKey(filename, key)` | Returns the line number (index) where a specific key is stored. |
+| `extractKeyValuePair(input)` | Parses a raw string line into an `ArrayList` where index 0 is the Key and index 1 is the Value (Object). |
+
+---
+
+## 🛠 Usage Examples
+
+### 1. Saving Game Data
+The `update` method is the most efficient way to manage save states, as it prevents duplicate keys.
+
+```java
+SunayFiler sf = new SunayFiler();
+String saveFile = "save_01.txt";
+
+// Saving different types
+sf.update(saveFile, "level", 5);
+sf.update(saveFile, "playerName", "Hero");
+sf.update(saveFile, "hasDoubleJump", true);
+```
+
+### 2. Loading Data
+Since `get()` returns an `Object`, you can cast it back to your desired type.
+
+```java
+int currentLevel = (int) sf.get(saveFile, "level");
+String name = (String) sf.get(saveFile, "playerName");
+boolean canJump = (boolean) sf.get(saveFile, "hasDoubleJump");
+
+System.out.println("Welcome back " + name + "! You are on level " + currentLevel);
+```
+
+### 3. Manual Parsing
+If you are iterating through all lines manually:
+
+```java
+String rawLine = "~i~ health $ 100";
+ArrayList<Object> data = sf.extractKeyValuePair(rawLine);
+
+String key = (String) data.get(0); // "health"
+int value = (int) data.get(1);     // 100
+```
+
+---
+
+## ⚠️ Requirements
+* **Inheritance:** This class extends `FileManager`. Ensure `FileManager.java` is in the same package.
+* **Formatting:** Do not manually edit the `.txt` files unless you maintain the `~type~` prefixes and the `$` split indicator, or `extractKeyValuePair` may fail.
