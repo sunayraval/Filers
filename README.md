@@ -1,12 +1,28 @@
 # Filers
-Quick and Easy Java txt Storage for Games
+Quick and Easy Java .txt Storage for Games
+
+## Table of Contents
+* [FileManager Class](#filemanager-class)
+    * [Features](#features)
+    * [API Reference](#api-reference)
+    * [Usage Examples](#usage-examples)
+    * [Notes](#notes)
+* [SunayFiler Class](#sunayfiler)
+    * [Key Features](#key-features)
+    * [Data Format Standard](#data-format-standard)
+    * [SunayFiler API Reference](#sunayfiler-api-reference)
+    * [SunayFiler Usage Examples](#sunayfiler-usage-examples)
+    * [Requirements](#requirements)
+
+---
+
 # FileManager Class
 
 A robust, lightweight Java utility class designed to simplify file I/O operations. It provides a high-level API for creating, deleting, reading, and modifying text files without worrying about complex stream management.
 
 ---
 
-## 🚀 Features
+## Features
 
 * **Easy Appending:** Quickly add data to files with automatic new-line handling.
 * **Direct Editing:** Replace or delete specific lines by their index.
@@ -16,7 +32,7 @@ A robust, lightweight Java utility class designed to simplify file I/O operation
 
 ---
 
-## 📖 API Reference
+## API Reference
 
 ### File Lifecycle
 | Method | Description |
@@ -45,7 +61,7 @@ A robust, lightweight Java utility class designed to simplify file I/O operation
 
 ---
 
-## 🛠 Usage Examples
+## Usage Examples
 
 ### 1. Basic Setup and Writing
 ```java
@@ -55,6 +71,7 @@ String myFile = "data.txt";
 fm.createFile(myFile);
 fm.writeLine(myFile, "Hello World!");
 fm.writeLine(myFile, "This is line two.");
+```
 
 ### 2. Updating a Specific Line
 ```java
@@ -77,10 +94,12 @@ fm.clear("data.txt"); // The file still exists but is now empty.
 
 ---
 
-## ⚠️ Notes
+## Notes
 * **Indices:** All line numbers are 0-based (the first line is index `0`).
 * **Exceptions:** Most methods include internal `try-catch` blocks to handle `IOExceptions`.
 * **Dependencies:** Requires Java 8 or higher (uses `java.nio.file.Files`).
+
+---
 
 # SunayFiler
 
@@ -88,7 +107,7 @@ fm.clear("data.txt"); // The file still exists but is now empty.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 * **Type Preservation:** Automatically handles prefixes (`~i~`, `~b~`, `~s~`) so data returns as the correct object type.
 * **Key-Value Logic:** Interact with your text files like a Database or HashMap.
@@ -97,7 +116,7 @@ fm.clear("data.txt"); // The file still exists but is now empty.
 
 ---
 
-## 📋 Data Format Standard
+## Data Format Standard
 Data is stored in the following format:
 `[TypePrefix] [Key] $ [Value]`
 
@@ -110,7 +129,7 @@ Data is stored in the following format:
 
 ---
 
-## 📖 API Reference
+## SunayFiler API Reference
 
 ### Adding & Updating Data
 | Method | Description |
@@ -127,7 +146,7 @@ Data is stored in the following format:
 
 ---
 
-## 🛠 Usage Examples
+## SunayFiler Usage Examples
 
 ### 1. Saving Game Data
 The `update` method is the most efficient way to manage save states, as it prevents duplicate keys.
@@ -166,6 +185,6 @@ int value = (int) data.get(1);     // 100
 
 ---
 
-## ⚠️ Requirements
+## Requirements
 * **Inheritance:** This class extends `FileManager`. Ensure `FileManager.java` is in the same package.
 * **Formatting:** Do not manually edit the `.txt` files unless you maintain the `~type~` prefixes and the `$` split indicator, or `extractKeyValuePair` may fail.
